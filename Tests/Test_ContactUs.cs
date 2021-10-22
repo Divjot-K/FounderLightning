@@ -58,5 +58,18 @@ namespace FounderLightning.Tests
             if (!emailStatus)
                 Assert.Pass("Test case is executed succesfully for invalid email address");
         }
+
+        [Test]
+        public void VerifyMobileNumberIsNumeric()
+        {
+            string num = "AXCD";
+            HomePage homePage = new HomePage();
+            ContactUs contact = homePage.NavigateToContact();
+            contact.FillContactUs(phnum: num);
+            contact.SubmitForm();
+            bool mobileStatus = contact.VerifyMobileNumberIsNumeric();
+            if (!mobileStatus)
+                Assert.Pass("Test case is executed succesfully for invalid phone number");
+        }
     }
 }

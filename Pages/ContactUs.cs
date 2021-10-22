@@ -34,7 +34,7 @@ namespace FounderLightning.Pages
 
         //InValid Error message
         By lblInvalidEmail = By.XPath("//input[@name='email']//parent::div/following-sibling::ul//label[contains(text(),'Email must be formatted correctly.')]");
-
+        By lblInvalidMobile = By.XPath("//input[@name ='mobilephone']//parent::div/following-sibling::ul//label[contains(text(),'Must contain only numbers, ()-. and x.')]");
         public void FillContactUs(string fn=null, string ln=null, string email=null, string phnum=null,
             string msg=null, string ddhearUs_value = null)
         {
@@ -79,6 +79,7 @@ namespace FounderLightning.Pages
                 }
                 catch(Exception ex)
                 {
+                    Console.WriteLine(ex.Message);
                     return false;
                 }
             });
@@ -112,11 +113,17 @@ namespace FounderLightning.Pages
             Regex regex = new Regex("^([0-9a-zA-Z]([-\\.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$",
                 RegexOptions.IgnoreCase);
             bool isValidEmail = regex.IsMatch(email);
-            if (isValidEmail)
+            bool isMsgDisplayed = driver.FindElement(lblInvalidEmail).Displayed;
+            if (isValidEmail && isMsgDisplayed)
                 return true;
             else
-                return false;
-           
+                return false;           
+        }
+
+        public bool VerifyMobileNumberIsNumeric()
+        {
+            bool status = driver.FindElement(lblInvalidMobile).Displayed;            
+            return status;
         }
 
     }
